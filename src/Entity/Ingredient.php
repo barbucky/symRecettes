@@ -30,6 +30,7 @@ class Ingredient
     /**On veut que le prix soit strictement positif ET inférieur à 200 */
     #[Assert\NotNull()]
     #[Assert\Positive()]
+    #[Assert\GreaterThan(0)]
     #[Assert\LessThan(200)]
     private ?float $price = null;
 
