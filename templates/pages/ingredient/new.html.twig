@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+  <div class='container mt-5'>
+    <h1>Création d'un ingrédient</h1>
+
+    
+
+    {{ form_start(form) }}
+    
+    {# On utilise les classes bootswatch pour disposer le formulaire:
+    Un form group par élément du formulaire.
+    Puis les fonctions twig form_label(), form_error()... Pour organiser les différents
+    champs#}
+    <div class="form-group">
+      {# Champ label de l'élément name du formulaire #}
+      {{form_label(form.name)}}
+      {# Champ input de l'élément name du formulaire #}
+      {{form_widget(form.name)}}
+      {# Message erreur pour l'élément name, sera donc affiché en dessous de l'input
+      class=form-error permet de display quelle erreur est reconnue dans le champ utilisé
+      Ici, par ex, on a fixé un UniqueEntity dans Ingredient, donc form-error 
+      indiquera si le nom proposé est déjà utilisé #}
+      <div class='form-error'>
+        {{ form_errors(form.name) }}
+        </div>  
+    </div>
+
+    <div class="form-group">
+      {# Champ label de l'élément name du formulaire #}
+      {{form_label(form.price)}}
+      {# Champ input de l'élément name du formulaire #}
+      {{form_widget(form.price)}}
+      {# Message erreur pour l'élément name, sera donc affiché en dessous de l'input #}
+      <div class='form-error'> 
+        {{ form_errors(form.price) }}
+      </div>
+    </div>
+
+    <div class="form-group">      
+      {{form_row(form.submit)}}      
+    </div>
+{{ form_end(form) }}
+  </div>
+
+{% endblock %}

@@ -5,12 +5,13 @@ namespace App\Entity;
 use App\Repository\IngredientRepository;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
  /**chemin composant symfony que l'on définir comme Assert */
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
+#[UniqueEntity('name')] #s'assure qu'un ingrédient ne peux exister en bdd si son nom existe déjà
 class Ingredient
 {
     #[ORM\Id]
