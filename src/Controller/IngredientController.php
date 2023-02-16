@@ -7,6 +7,7 @@ use App\Entity\Ingredient;
 use App\Form\IngredientType;
 #!!!                                    !!!
 use App\Repository\IngredientRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,9 +88,66 @@ class IngredientController extends AbstractController
     /**
      * This controller allow to update an ingredient 
      */
-    #[Route('/ingredient/eidtion/{id}', name: 'ingredient.edit', methods:['GET', 'POST']) ]
-    public function edit(): Response
+    #[Route('/ingredient/edition/{id}', name: 'ingredient.edit', methods:['GET', 'POST']) ]
+    /**
+     * Plusieurs façons de gérer l'update. 
+     * La plus commune, paar intercéption du repository, lieu où est centralisé
+     * tout ce qui touche à l'entity, ici Ingredient:
+     *  CAS CLASSIQUE: 
+     * public function edit(IngredientRepository $repository, int $id): Response
+     * { $ingredient=$repository->findOneBy(["id" => $id]);
+     *   $form = $this->createForm(IngredientType::class, $ingrdient);
+     */
+
+/**
+ * CAS USAGE paramConverter
+ * Grâce à symfony on peut simplement récuperer l'objet (Ingredient) en paramètre
+ * Comme il existe le paramètre id dans l'objet Ingredient, 
+ * il va fetch automatiquement l'élément qui a la valeur correspondante 
+ * au placeholder (ici {id}) placé dans la route
+ * 
+ * 
+ */
+    public function edit(Ingredient $ingredient, Request $request, EntityManagerInterface $manager): Response
     {
-     return $this->render('pages/ingredient/edit.html.twig');
+        #dd($ingredient);
+        $form = $this->createForm(IngredientType::class, $ingredient);
+        $form -> handleRequest($request);    
+        if($form->isSubmitted() && $form->isValid()){
+            $ingredient = $form->getData();
+
+            $manager->persist($ingredient);        
+            $manager->flush();
+        
+        #Message de confirmation de modif
+            $this->addFlash(
+                'success',
+                'La modification de votre ingrédient a bien été enregistrée !');
+
+        /**
+         * Gère la redirection de l'user vers la liste ingrédients après validation création 
+         * (empêche de pouvoir rafraichir sur la création et interférer avec la bdd par ex)
+         */
+            return $this->redirectToRoute('app_ingredient');
+            
+            
+        }
+        return $this->render('pages/ingredient/edit.html.twig',[
+
+        'form' => $form->createView()]);        
+    }
+
+    #[Route('/ingredient/suppression/{id}', name: 'ingredient.delete', methods:['GET'])]
+    public function delete(EntityManagerInterface $manager, Ingredient $ingredient): Response
+    {
+        $manager->remove($ingredient);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Votre ingrédient a été supprimé avec succès !');
+
+
+        return $this->redirectToRoute('app_ingredient');
     }
 }

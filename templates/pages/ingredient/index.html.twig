@@ -27,11 +27,13 @@ on crée une condition pour y répondre, avec if, else et endif #}
 
       <table class="table table-hover mt-3">
   <thead>
-    <tr>
+    <tr >
       <th scope="col">Numéro</th>
       <th scope="col">Nom</th>
       <th scope="col">Prix</th>
       <th scope="col">Date de création</th>
+      <th scope="col">Édition</th>
+      <th scope="col">Suppression</th>
     </tr>
   </thead>
   <tbody> 
@@ -40,8 +42,12 @@ on crée une condition pour y répondre, avec if, else et endif #}
           <th scope="row">{{ingredient.id}}</th>
           <td>{{ingredient.name}}</td>
           <td>{{ingredient.price}} €</td>
-          <td>{{ingredient.createdAt|date("d/m/Y")}}</td>{# filtre date pour 
-          convertir le format date en string#}
+          {# filtre date pour convertir le format date en string#}
+          <td>{{ingredient.createdAt|date("d/m/Y")}}</td>
+          <td><a href="{{ path('ingredient.edit', {id : ingredient.id}) }}" 
+          class="btn btn-primary d-flex justify-content-center">Modifier</a></td>
+          <td><a href="{{ path('ingredient.delete', {id : ingredient.id})}}" 
+          class="btn btn-danger d-flex justify-content-center">Supprimer</a></td>
         </tr>
       {% endfor %}
     </tbody>
