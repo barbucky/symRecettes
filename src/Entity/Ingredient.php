@@ -7,7 +7,7 @@ use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
- /**chemin composant symfony que l'on définir comme Assert */
+ /**chemin composant symfony Constraint que l'on définit comme Assert */
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
@@ -89,5 +89,15 @@ class Ingredient
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+    /**
+     * L'entité Recette fait appel à l'entité Ingredient. Lors de la construction
+     * du formulaire (RecetteType), on obtient un message d'erreur car symfony ne
+     * ne parvient pas à trouver les informations qu'il doit récupérer pour les 
+     * fournir au formulaire. On lui indique donc grâce à un constructeur
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }

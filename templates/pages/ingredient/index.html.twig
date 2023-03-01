@@ -1,70 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}symRecette - Ingédients{% endblock %}
+{% block title %}symRecette - Ingédients
+{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-    {# read and display just one flash message type
-    Validation new ingredient #}
-      {% for message in app.flashes('success') %}
-      <div class="alert alert-success alert-dismissible">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-          {{ message }}
-      </div>
-      {% endfor %}
-      <h1>Mes ingrédients</h1>
-    {# path est un package symfony qui permet d'indiquer une destination
-    pour le lien au sein du projet. Cette route sera automatiquement updaté
-    en cas de changement de localisation du fichier#}
-      <a href="{{path('ingredient.new')}}" class="btn btn-success btn-sm">Créer un nouvel ingrédient</a>
+	<div
+		class="container mt-5">
+		{# read and display just one flash message type
+		    Validation new ingredient #}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success alert-dismissible">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				{{ message }}
+			</div>
+		{% endfor %}
+		<h1>Mes ingrédients</h1>
+		{# path est un package symfony qui permet d'indiquer une destination
+		    pour le lien au sein du projet. Cette route sera automatiquement updaté
+		    en cas de changement de localisation du fichier#}
+		<a href="{{path('ingredient.new')}}" class="btn btn-success btn-sm">Créer un nouvel ingrédient</a>
 
-      <div class="count mt-3 d-flex justify-content-center">
-{# Pour répondre au cas pour lequel notre liste d'ingrédient serait vide, 
-on crée une condition pour y répondre, avec if, else et endif #}
-      {% if ingredients.getTotalItemCount != 0 %}
-        <h5>Il y a actuellement {{ ingredients.getTotalItemCount }} ingrédients dans la liste</h5>
-      </div>
+		<div
+			class="count mt-3 d-flex justify-content-center">
+			{# Pour répondre au cas pour lequel notre liste d'ingrédient serait vide, 
+			on crée une condition pour y répondre, avec if, else et endif #}
+			{% if ingredients.getTotalItemCount != 0 %}
+				<h5>Il y a actuellement
+					{{ ingredients.getTotalItemCount }}
+					ingrédients dans la liste</h5>
+			</div>
 
-      <table class="table table-hover mt-3">
-  <thead>
-    <tr >
-      <th scope="col">Numéro</th>
-      <th scope="col">Nom</th>
-      <th scope="col">Prix</th>
-      <th scope="col">Date de création</th>
-      <th scope="col">Édition</th>
-      <th scope="col">Suppression</th>
-    </tr>
-  </thead>
-  <tbody> 
-      {% for ingredient in ingredients %}
-        <tr class="table-dark">
-          <th scope="row">{{ingredient.id}}</th>
-          <td>{{ingredient.name}}</td>
-          <td>{{ingredient.price}} €</td>
-          {# filtre date pour convertir le format date en string#}
-          <td>{{ingredient.createdAt|date("d/m/Y")}}</td>
-          <td><a href="{{ path('ingredient.edit', {id : ingredient.id}) }}" 
-          class="btn btn-primary d-flex justify-content-center">Modifier</a></td>
-          <td><a href="{{ path('ingredient.delete', {id : ingredient.id})}}" 
-          class="btn btn-danger d-flex justify-content-center">Supprimer</a></td>
-        </tr>
-      {% endfor %}
-    </tbody>
-    
-   
-</table>
+			<table class="table table-hover mt-3">
+				<thead>
+					<tr>
+						<th scope="col">Numéro</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Prix</th>
+						<th scope="col">Date de création</th>
+						<th scope="col">Édition</th>
+						<th scope="col">Suppression</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for ingredient in ingredients %}
+						<tr class="table-dark">
+							<th scope="row">{{ingredient.id}}</th>
+							<td>{{ingredient.name}}</td>
+							<td>{{ingredient.price}}
+								€</td>
+							{# filtre date pour convertir le format date en string#}
+							<td>{{ingredient.createdAt|date("d/m/Y")}}</td>
+							<td>
+								<a href="{{ path('ingredient.edit', {id : ingredient.id}) }}" class="btn btn-primary d-flex justify-content-center">Modifier</a>
+							</td>
+							<td>
+								<a href="{{ path('ingredient.delete', {id : ingredient.id})}}" class="btn btn-danger d-flex justify-content-center">Supprimer</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 
-<div class="navigation d-flex justify-content-center">
-    {{ knp_pagination_render(ingredients) }}
-</div>
-{% else %}
-  <h5>Il n'y a aucun ingrédient enregistré.</h5>
-  
-{% endif %}
-     
-        
-      
-    </div>
+			<div class="navigation d-flex justify-content-center">
+				{{ knp_pagination_render(ingredients) }}
+			</div>
+		{% else %}
+			<h5>Il n'y a aucun ingrédient enregistré.</h5>
+
+		{% endif %}
+
+
+	</div>
 
 {% endblock %}

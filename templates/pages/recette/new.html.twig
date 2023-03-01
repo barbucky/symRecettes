@@ -1,0 +1,112 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<div class='container mt-5'>
+		<h1>Création d'une nouvelle recette</h1>
+
+		{{ form_start(form) }}
+		<div class="form-group">
+
+			{{form_label(form.Name)}}
+
+			{{form_widget(form.Name)}}
+
+			<div class='form-error'>
+				{{ form_errors(form.Name) }}
+			</div>
+
+		</div>
+
+    <div class="form-group">
+
+			{{form_label(form.executionTime)}}
+
+			{{form_widget(form.executionTime)}}
+
+			<div class='form-error'>
+				{{ form_errors(form.executionTime) }}
+			</div>
+    </div>
+
+    <div class="form-group">
+
+			{{form_label(form.nbPersonnes)}}
+
+			{{form_widget(form.nbPersonnes)}}
+
+			<div class='form-error'>
+				{{ form_errors(form.nbPersonnes) }}
+			</div>
+    </div>
+    
+    <div class="form-group">
+
+			{{form_label(form.Price)}}
+
+			{{form_widget(form.Price)}}
+
+			<div class='form-error'>
+				{{ form_errors(form.Price) }}
+			</div>
+    </div>
+
+    <div class="form-group mt-4">
+
+			{{form_label(form.Favorite)}}
+
+			{{form_widget(form.Favorite)}}
+
+			<div class='form-error'>
+				{{ form_errors(form.Favorite) }}
+			</div>
+    </div>
+
+    <div class="form-group">
+
+			{{form_label(form.IngredientsIn)}}
+
+			{{form_widget(form.IngredientsIn)}}
+
+			<div class='form-error'>
+				{{ form_errors(form.IngredientsIn) }}
+			</div>
+    </div>
+
+    <div class="form-group">
+
+			{{form_label(form.Description)}}
+
+			{{form_widget(form.Description)}}
+
+			<div class='form-error'>
+				{{ form_errors(form.Description) }}
+			</div>
+    </div>
+
+    <div class="form-group mt-4">
+
+			{{form_label(form.Difficulty)}}
+
+			{{form_widget(form.Difficulty)}}
+			<div class="d-flex justify-content-between">
+					<p style="font-weight:bold">1</p>
+					<p style="font-weight:bold">5</p>
+			</div>
+
+			<div class='form-error'>
+				{{ form_errors(form.Difficulty) }}
+				
+			</div>
+    </div>
+
+    
+    <div class="form-group d-flex mt-5">      
+      {{form_row(form.submit)}}
+			<a href="{{ path('recette.index')}}" class="btn btn-warning mt-3 ms-3">Annuler</a>      
+    </div>
+	</div>
+
+		{{ form_end(form) }}
+
+
+	{% endblock %}

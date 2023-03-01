@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}symRecette - Recettes
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		{# read and display just one flash message type
+		    Validation nouvelle recette #}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success alert-dismissible">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				{{ message }}
+			</div>
+		{% endfor %}
+		<h1>Mes recettes</h1>
+		<a href="{{path('recette.new')}}" class="btn btn-success btn-sm">Créer une nouvelle recette</a>		
+		<table class="table table-hover mt-3">
+			<thead>
+				<tr>
+					<th scope="col">Num</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Difficulté</th>
+					<th scope="col">Préparation (en min)</th>				
+					<th scope="col">Nombre de couverts</th>
+					<th scope="col">Prix</th>
+					<th scope="col">Favoris</th>
+					<th scope="col">Date de création</th>
+					<th scope="col">Liste ingrédients</th>
+					<th scope="col">Description</th>
+					<th scope="col">Édition</th>
+					<th scope="col">Suppression</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{% for recette in recettes %}
+					<tr class="table-secondary">
+						<th scope="row">{{recette.id}}</th>
+						<td>{{recette.name}}</td>
+						{# prix et difficulté ne sont pas obligatoires, on gère le cas où 
+						ils ne seraient pas renseignés#}
+						<td>{% if recette.difficulty is null %}
+							Non spécifiée
+								{% else %}
+									{{recette.difficulty}}
+								{% endif %}
+							</td>
+
+						<td>{{recette.executionTime}}</td>
+						<td>{{recette.nbPersonnes}}</td>
+
+						<td>{% if recette.Price is null %}
+							Non renseigné
+								{% else %}
+									{{recette.Price}} €
+								{% endif %}
+						</td>
+
+						<td class="text-center">{% if recette.Favorite == 1 %}
+									⭐
+								{% endif %}
+						</td>
+						<td>{{recette.createdAt|date("d/m/Y")}}</td>
+
+						<td>
+						</td>
+
+						<td class="col-3">{{recette.Description}}</td>
+						<td><a href="{{ path('recette.edit', {id : recette.id}) }}" class="btn btn-primary d-flex justify-content-center">Modifier</a></td>
+						<td><a href="{{ path('recette.delete', {id : recette.id})}}" class="btn btn-danger d-flex justify-content-center">Supprimer</a></td>
+
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="navigation d-flex justify-content-center">
+			{{ knp_pagination_render(recettes) }}
+		</div>
+	    
+
+    </div>
+{% endblock %}
